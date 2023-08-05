@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Notes</string>
+    <string name="date">Date</string>
+    <string name="title">Title</string>
+    <string name="body">Body</string>
+    <string name="delete_note">Delete Note</string>
+
+    <string name="ascending">Ascending</string>
+    <string name="descending">Descending</string>
+
+    //Messages
+    <string name="msg_no_notes_found">No notes found. Add notes by pressing the + button.</string>
+    <string name="msg_delete_note">Note deleted. Title: %s.</string>
+    <string name="msg_add_note">Add Note</string>
+    <string name="msg_sort_notes">Sort Notes</string>
+    <string name="msg_note_deleted">Note Deleted</string>
+    <string name="msg_restore_note">Undo</string>
+    <string name="msg_start_typing">Start typing</string>
+    <string name="msg_go_back">Navigate Back</string>
+    <string name="msg_unknown_error">Unknown Error</string>
+    <string name="msg_empty_title">[Empty Title]</string>
+
+    //Preinstalled notes
+    <string name="note_1_title"></string>
+</resources>
