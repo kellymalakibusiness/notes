@@ -10,13 +10,11 @@ import com.malakiapps.notes.feature_note.domain.util.OrderType
 import com.malakiapps.notes.feature_note.presentation.NoteDateInstances
 import com.malakiapps.notes.feature_note.presentation.notes_home.NotesHomeEvent
 import com.malakiapps.notes.feature_note.presentation.notes_home.NotesHomeViewModel
-import com.malakiapps.notes.feature_note.presentation.util.*
 import org.junit.Test
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.ZoneOffset
 import java.time.temporal.TemporalAdjusters
-import java.util.Date
 import java.util.TimeZone
 
 class NotesHomeViewModelLogicTests: NotesPresentationTestsStructure() {

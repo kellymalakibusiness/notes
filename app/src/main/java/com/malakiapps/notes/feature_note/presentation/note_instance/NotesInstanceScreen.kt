@@ -31,12 +31,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleObserver
 import androidx.navigation.NavController
 import com.malakiapps.notes.R
 import com.malakiapps.notes.feature_note.presentation.note_instance.components.TransparentHintTextField
@@ -156,7 +156,11 @@ fun NotesInstanceScreen(
                 Spacer(modifier = Modifier.width(MaterialTheme.spacing.small))
                 Text(text = "|", color = MaterialTheme.appColors.dateLabel, style = dateRowStyle)
                 Spacer(modifier = Modifier.width(MaterialTheme.spacing.small))
-                Text(text = bodyState.text.replace(" ", "").length.toString(), color = MaterialTheme.appColors.dateLabel, style = dateRowStyle)
+                Text(text = bodyState.text.replace(" ", "").length.toString(),
+                    color = MaterialTheme.appColors.dateLabel,
+                    style = dateRowStyle,
+                    modifier = Modifier.testTag(TestTags.NOTE_INSTANCE_CHARACTER_COUNT)
+                )
                 Text(text = " characters", color = MaterialTheme.appColors.dateLabel, style = dateRowStyle)
             }
 

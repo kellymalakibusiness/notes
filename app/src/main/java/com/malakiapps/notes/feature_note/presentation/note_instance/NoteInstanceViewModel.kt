@@ -40,7 +40,7 @@ class NoteInstanceViewModel @Inject constructor(
     private val _eventFlow = MutableSharedFlow<NoteInstanceUIEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    var closingNoteInstance = false
+    private var closingNoteInstance = false
 
     private var noteId: Int? = null
 

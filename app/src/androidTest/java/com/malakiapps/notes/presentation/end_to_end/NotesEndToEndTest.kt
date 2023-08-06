@@ -1,9 +1,6 @@
 package com.malakiapps.notes.presentation.end_to_end
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.compose.ui.test.SemanticsNodeInteraction
-import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasContentDescription
@@ -11,11 +8,12 @@ import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
-import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.test.performTextReplacement
 import androidx.test.filters.LargeTest
 import com.malakiapps.notes.R
 import com.malakiapps.notes.di.AppModule
@@ -29,7 +27,7 @@ import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 
-//@LargeTest
+@LargeTest
 @HiltAndroidTest
 @UninstallModules(AppModule::class)
 class NotesEndToEndTest {
@@ -139,9 +137,9 @@ class NotesEndToEndTest {
     }
 
     @Test
-    @Ignore("compose test won't call code inside an effect. Check on it later")
     fun itShouldReverseADeletedNoteFromSnackBar(){
         //Arrange
+        val emptyDashboardTextMatcher = hasText(composeRule.activity.getString(R.string.msg_no_notes_found))
         val addNoteButtonMatcher =
             hasContentDescription(composeRule.activity.getString(R.string.msg_add_note)) and hasClickAction()
         val note1 = NoteCreator(
@@ -155,22 +153,15 @@ class NotesEndToEndTest {
         //Open and type a new note
         composeRule.onNode(addNoteButtonMatcher).performClick()
         insertNoteDetails(note1)
+        composeRule.activity.onBackPressedDispatcher.onBackPressed()
 
-        //Press the delete action bar button
-        composeRule.onNodeWithContentDescription(composeRule.activity.getString(R.string.delete_note)).performClick()
+        //Press the delete button
+        composeRule.onNodeWithContentDescription(composeRule.activity.getString(R.string.msg_delete_note)).performClick()
 
         //Check for empty dashboard
         assertNoteExistence(noteAvailable = false, note1)
 
-        //Check for the snack bar and press the action button
-        composeRule.waitUntil {
-            composeRule.onAllNodesWithText(
-                composeRule.activity.getString(
-                    R.string.msg_delete_note,
-                    note1.title
-                )
-            ).fetchSemanticsNodes().isNotEmpty()
-        }
+        composeRule.onNodeWithText(composeRule.activity.getString(R.string.msg_delete_note, note1.title)).assertExists()
         composeRule.onNodeWithText(composeRule.activity.getString(R.string.msg_restore_note)).performClick()
 
         //Check if note was regenerated
@@ -245,6 +236,39 @@ class NotesEndToEndTest {
         bodyArrangementDescending[0].assertTextContains(notes[0].body)
         bodyArrangementDescending[1].assertTextContains(notes[2].body)
         bodyArrangementDescending[2].assertTextContains(notes[1].body)
+    }
+
+    @Test
+    fun itShouldUpdateACreatedNote(){
+        //Arrange
+        val addNoteButtonMatcher =
+            hasContentDescription(composeRule.activity.getString(R.string.msg_add_note)) and hasClickAction()
+        val note1 = NoteCreator(
+            title = "Note Title4",
+            body = "Note body4"
+        )
+        val updatedNote1 = NoteCreator(
+            title = "123",
+            body = "abs"
+        )
+
+        //Act
+        assertNoteExistence(noteAvailable = false, note1)
+        composeRule.onNode(addNoteButtonMatcher).performClick()
+        insertNoteDetails(note1)
+        composeRule.activity.onBackPressedDispatcher.onBackPressed()
+
+        assertNoteExistence(noteAvailable = true, note1)
+
+        composeRule.onNodeWithTag(TestTags.HOME_NOTE_INSTANCE_ITEM).performClick()
+
+        //It should update the note
+        composeRule.onNode(hasTestTag(TestTags.NOTE_TITLE_TEXT_FIELD) and hasText(note1.title)).performTextReplacement(updatedNote1.title)
+        composeRule.onNode(hasTestTag(TestTags.NOTE_BODY_TEXT_FIELD) and hasText(note1.body)).performTextReplacement(updatedNote1.body)
+
+        composeRule.activity.onBackPressedDispatcher.onBackPressed()
+
+        assertNoteExistence(noteAvailable = true, updatedNote1)
     }
 
     private fun insertNoteDetails(noteCreator: NoteCreator){

@@ -48,6 +48,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import com.malakiapps.notes.R
+import com.malakiapps.notes.feature_note.presentation.note_instance.NoteInstanceResources
 import com.malakiapps.notes.feature_note.presentation.notes_home.components.NoteItem
 import com.malakiapps.notes.feature_note.presentation.notes_home.components.SortingSelector
 import com.malakiapps.notes.feature_note.presentation.util.ArgumentNames
@@ -162,7 +163,7 @@ fun NotesHomeScreen(
                                 .clip(RoundedCornerShape(MaterialTheme.spacing.smallMedium))
                                 .background(color = MaterialTheme.appColors.cardBackground)
                                 .clickable {
-                                    navController.navigate(Screen.NotesInstance.route + "?noteId=${note.id}")
+                                    navController.navigate(Screen.NotesInstance.route + "?${NoteInstanceResources.noteId}=${note.id}")
                                 },
                             dateInstances = viewModel.dateInstances,
                             onDeleteClick = {
