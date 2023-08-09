@@ -14,8 +14,8 @@ The notes application was created from inspiration of the miui notes application
 
 7.Android resource handling and implementation.
 
-The source code of the application can be accessed at
+The application can be downloaded on playstore from this link
 
-https://github.com/kellymalakibusiness/notes
+https://play.google.com/store/apps/details?id=com.malakiapps.notes&pli=1
 
 Committed to delivering high-quality code and building scalable, maintainable Android applications.
